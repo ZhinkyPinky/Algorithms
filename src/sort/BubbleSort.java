@@ -13,6 +13,7 @@ public class BubbleSort<T extends Comparable<T>> {
                 }
             }
 
+            n--;
         } while (swapped);
     }
 
