@@ -1,8 +1,5 @@
 package sort;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-
 public class MergeSort<T extends Comparable<T>> {
     public void sort(T[] array) {
         divide(array, 0, array.length - 1);
@@ -10,7 +7,6 @@ public class MergeSort<T extends Comparable<T>> {
 
     public void divide(T[] array, int left, int right) {
         if (left < right) { //Can we divide further?
-            //Find middle
             int middle = left + (right - left) / 2;
 
             //Divide left half
@@ -25,18 +21,18 @@ public class MergeSort<T extends Comparable<T>> {
 
     private void merge(T[] array, int left, int middle, int right) {
         //Create and copy data to left partition
-        T[] leftPartition = (T[]) new Comparable[middle - left + 1];
-        //for (int i = 0; i < leftPartition.length; i++) leftPartition[i] = array[left + i];
-        System.arraycopy(array, left, leftPartition, 0, leftPartition.length);
+        int leftSize = middle - left + 1;
+        T[] leftPartition = (T[]) new Comparable[leftSize];
+        System.arraycopy(array, left, leftPartition, 0, leftSize);
 
         //Create and copy data to right partition
-        T[] rightPartition = (T[]) new Comparable[right - middle];
-        //for (int i = 0; i < rightPartition.length; i++) rightPartition[i] = array[middle + 1 + i];
-        System.arraycopy(array, middle + 1, rightPartition, 0, rightPartition.length);
+        int rightSize = right - middle;
+        T[] rightPartition = (T[]) new Comparable[rightSize];
+        System.arraycopy(array, middle + 1, rightPartition, 0, rightSize);
 
         //Insert data from the partitions into the array in the correct order
         int i = 0, j = 0, k = left;
-        while (i < leftPartition.length && j < rightPartition.length) {
+        while (i < leftSize && j < rightSize) {
             if (leftPartition[i].compareTo(rightPartition[j]) <= 0) {
                 array[k++] = leftPartition[i++];
             } else {
@@ -44,10 +40,8 @@ public class MergeSort<T extends Comparable<T>> {
             }
         }
 
-        //Add remaining elements from the left partition to the array.
-        while (i < leftPartition.length) array[k++] = leftPartition[i++];
-
-        //Add remaining elements from the right partition to the array.
-        while (j < rightPartition.length) array[k++] = rightPartition[j++];
+        //Add remaining elements from the partitions to the array.
+        while (i < leftSize) array[k++] = leftPartition[i++];
+        while (j < rightSize) array[k++] = rightPartition[j++];
     }
 }
