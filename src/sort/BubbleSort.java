@@ -3,18 +3,18 @@ package sort;
 public class BubbleSort<T extends Comparable<T>> {
     public void sort(T[] a) {
         int n = a.length;
-        boolean swapped;
+        int newN;
         do {
-            swapped = false;
-            for (int j = 0; j < (n - 1); j++) {
-                if (a[j].compareTo(a[j + 1]) > 0) {
-                    swapElements(a, j, j + 1);
-                    swapped = true;
+            newN = 0;
+            for (int i = 1; i < n; i++) {
+                if (a[i - 1].compareTo(a[i]) > 0) {
+                    swapElements(a, i - 1, i);
+                    newN = i;
                 }
             }
 
-            n--;
-        } while (swapped);
+            n = newN;
+        } while (newN > 1);
     }
 
     private void swapElements(T[] a, int l, int r) {

@@ -25,12 +25,12 @@ public class CountSort {
      * @param R Alphabet size.
      */
     public static void sort(int[] a, int R) {
-        int N = a.length;
+        int n = a.length;
         int[] count = new int[R + 1];
-        int[] aux = new int[N];
+        int[] aux = new int[n];
 
         //Count the frequency of the elements
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i < n; i++) {
             count[a[i] + 1]++;
         }
 
@@ -40,11 +40,11 @@ public class CountSort {
         }
 
         //Use count to place the values in a on the correct index in aux.
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i < n; i++) {
             aux[count[a[i]]++] = a[i];
         }
 
         //Copy the aux array back into the original array
-        System.arraycopy(aux, 0, a, 0, N);
+        System.arraycopy(aux, 0, a, 0, n);
     }
 }

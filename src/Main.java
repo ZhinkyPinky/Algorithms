@@ -1,9 +1,9 @@
-import sort.BubbleSort;
-import sort.BucketSort;
-import sort.InsertionSort;
+import sort.*;
 
 import java.io.*;
 import java.util.ArrayList;
+
+import static sort.Validator.arraySorted;
 
 public class Main {
     public static void main(String[] args) {
@@ -11,9 +11,12 @@ public class Main {
         Integer[] a = {2, 5, 3, 0, 2, 3, 0, 3};
         double[] b = {0.78, 0.17, 0.39, 0.26, 0.72, 0.94, 0.21, 0.12, 0.23, 0.68};
 
-        //testInsertionSort(100000);
+        String intTestDataPath = "src\\testdata\\ints.txt";
+
+        testMergeSort(intTestDataPath, Integer.MAX_VALUE);
+        testInsertionSort(intTestDataPath, 100000);
         //testBucketSort(Integer.MAX_VALUE);
-        testBubbleSort(50000);
+        //testBubbleSort(100000);
     }
 
     private static void testBucketSort(int numberOfElementsToSort) {
@@ -38,50 +41,56 @@ public class Main {
         Long timeAfter = System.currentTimeMillis();
 
         System.out.println("BucketSort took " + ((timeAfter - timeBefore) / 1000.0) + " seconds to sort " + integers.length + " elements with " + numberOfBuckets + " buckets.");
-        validateArraySorted(doubles);
+        arraySorted(doubles);
     }
 
-    private static void testInsertionSort(int numberOfElementsToSort) {
-        Integer[] testData = fileToIntArray("C:\\Users\\jonat\\Programming\\Java\\Algorithmic_methods_for_search_and_storage\\Radix Sort\\ints.txt", numberOfElementsToSort);
+    private static void testMergeSort(String filePath, int numberOfElementsToSort) {
+        Integer[] testData = fileToIntArray(filePath, numberOfElementsToSort);
+
+        //Arrays.stream(doubleTestData).forEach(d -> System.out.println("Before: " + d));
 
         Long timeBefore = System.currentTimeMillis();
-        new InsertionSort<Integer>().sort(testData);
+        new MergeSort<Integer>().sort(testData);
         Long timeAfter = System.currentTimeMillis();
+
+        //Arrays.stream(doubleTestData).forEach(d -> System.out.println("After: " + d));
+
+        System.out.println("MergeSort took " + ((timeAfter - timeBefore) / 1000.0) + " seconds to sort " + testData.length + " elements.");
+        arraySorted(testData);
+    }
+
+    private static void testInsertionSort(String filePath, int numberOfElementsToSort) {
+        Integer[] testData = fileToIntArray(filePath, numberOfElementsToSort);
+        Double[] doubleTestData = new Double[testData.length];
+        for (int i = 0; i < testData.length; i++) {
+            doubleTestData[i] = testData[i] / 100.0;
+        }
+
+        //Arrays.stream(doubleTestData).forEach(d -> System.out.println("Before: " + d));
+
+        Long timeBefore = System.currentTimeMillis();
+        new InsertionSort<Double>().sort(doubleTestData);
+        Long timeAfter = System.currentTimeMillis();
+
+        //Arrays.stream(doubleTestData).forEach(d -> System.out.println("After: " + d));
+
         System.out.println("InsertionSort took " + ((timeAfter - timeBefore) / 1000.0) + " seconds to sort " + testData.length + " elements.");
-        validateArraySorted(testData);
+        arraySorted(doubleTestData);
     }
 
     private static void testBubbleSort(int numberOfIntsToSort) {
-        Integer[] intTestData = fileToIntArray("src\\testdata\\ints.txt", numberOfIntsToSort);
+        Integer[] testData = fileToIntArray("src\\testdata\\ints.txt", numberOfIntsToSort);
+
+        BubbleSort<Integer> bubbleSort = new BubbleSort<Integer>();
 
         Long timeBefore = System.currentTimeMillis();
-        new BubbleSort<Integer>().sort(intTestData);
+        bubbleSort.sort(testData);
         Long timeAfter = System.currentTimeMillis();
-        System.out.println("BubbleSort took " + ((timeAfter - timeBefore) / 1000.0) + " seconds to sort " + intTestData.length + " integers.");
-        validateArraySorted(intTestData);
+
+        System.out.println("BubbleSort took " + ((timeAfter - timeBefore) / 1000.0) + " seconds to sort " + testData.length + " integers.");
+        arraySorted(testData);
     }
 
-    private static void validateArraySorted(Integer[] a) {
-        int previousInt = Integer.MIN_VALUE;
-        for (int currentInt : a) {
-            if (previousInt > currentInt) {
-                System.out.println("Array not sorted.");
-                break;
-            }
-            previousInt = currentInt;
-        }
-    }
-
-    private static void validateArraySorted(Double[] a) {
-        double previous = Double.MIN_VALUE;
-        for (double current : a) {
-            if (previous > current) {
-                System.out.println("Array not sorted. " + previous + " > " + current);
-                break;
-            }
-            previous = current;
-        }
-    }
 
     private static Integer[] fileToIntArray(String filePath, int numberOfIntsToRead) {
         ArrayList<Integer> arrayList = new ArrayList<>();
