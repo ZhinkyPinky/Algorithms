@@ -8,7 +8,7 @@ public class MergeSort<T extends Comparable<T>> {
     }
 
     public void divide(T[] array, int left, int right) {
-        if (left < right) { //If more than one element in partition.
+        if (left < right) { //Can we divide further?
             //Find middle
             int middle = left + (right - left) / 2;
 
