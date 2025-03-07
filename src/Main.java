@@ -14,7 +14,7 @@ public class Main {
         String intTestDataPath = "src\\testdata\\ints.txt";
 
         testMergeSort(intTestDataPath, Integer.MAX_VALUE);
-        testInsertionSort(intTestDataPath, 100000);
+        //testInsertionSort(intTestDataPath, 100000);
         //testBucketSort(Integer.MAX_VALUE);
         //testBubbleSort(100000);
     }

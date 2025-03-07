@@ -1,6 +1,7 @@
 package sort;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 
 public class MergeSort<T extends Comparable<T>> {
     public void sort(T[] array) {
@@ -24,12 +25,14 @@ public class MergeSort<T extends Comparable<T>> {
 
     private void merge(T[] array, int left, int middle, int right) {
         //Create and copy data to left partition
-        T[] leftPartition = (T[]) Array.newInstance(Comparable.class, middle - left + 1);
-        for (int i = 0; i < leftPartition.length; i++) leftPartition[i] = array[left + i];
+        T[] leftPartition = (T[]) new Comparable[middle - left + 1];
+        //for (int i = 0; i < leftPartition.length; i++) leftPartition[i] = array[left + i];
+        System.arraycopy(array, left, leftPartition, 0, leftPartition.length);
 
         //Create and copy data to right partition
-        T[] rightPartition = (T[]) Array.newInstance(Comparable.class, right - middle);
-        for (int i = 0; i < rightPartition.length; i++) rightPartition[i] = array[middle + 1 + i];
+        T[] rightPartition = (T[]) new Comparable[right - middle];
+        //for (int i = 0; i < rightPartition.length; i++) rightPartition[i] = array[middle + 1 + i];
+        System.arraycopy(array, middle + 1, rightPartition, 0, rightPartition.length);
 
         //Insert data from the partitions into the array in the correct order
         int i = 0, j = 0, k = left;
