@@ -13,10 +13,31 @@ public class Main {
 
         String intTestDataPath = "src\\testdata\\ints.txt";
 
-        testMergeSort(intTestDataPath, Integer.MAX_VALUE);
-        //testInsertionSort(intTestDataPath, 100000);
-        //testBucketSort(Integer.MAX_VALUE);
-        //testBubbleSort(100000);
+        testRadixSortLSD(intTestDataPath, Integer.MAX_VALUE);
+    }
+
+    private static void testRadixSortLSD(String filePath, int numberOfElementsToSort) {
+        Integer[] integers = fileToIntArray(filePath, numberOfElementsToSort);
+        String[] strings = new String[integers.length];
+        for (int i = 0; i < integers.length; i++) {
+            strings[i] = String.format("%32s", Integer.toBinaryString(integers[i])).replace(" ", "0");
+        }
+
+        //Arrays.stream(doubleTestData).forEach(d -> System.out.println("Before: " + d));
+
+        Long timeBefore = System.currentTimeMillis();
+        new RadixSortLSD().sort(strings, 256);
+        Long timeAfter = System.currentTimeMillis();
+
+        //Arrays.stream(doubleTestData).forEach(d -> System.out.println("After: " + d));
+
+        System.out.println("RadixSortLSD took " + ((timeAfter - timeBefore) / 1000.0) + " seconds to sort " + integers.length + " elements.");
+
+        for (int i = 0; i < integers.length; i++) {
+            integers[i] = Integer.parseInt(strings[i], 2);
+        }
+
+        arraySorted(integers);
     }
 
     private static void testBucketSort(int numberOfElementsToSort) {
@@ -45,18 +66,19 @@ public class Main {
     }
 
     private static void testMergeSort(String filePath, int numberOfElementsToSort) {
-        Integer[] testData = fileToIntArray(filePath, numberOfElementsToSort);
+        Integer[] integers = fileToIntArray(filePath, numberOfElementsToSort);
 
         //Arrays.stream(doubleTestData).forEach(d -> System.out.println("Before: " + d));
 
         Long timeBefore = System.currentTimeMillis();
-        new MergeSort<Integer>().sort(testData);
+        new MergeSort<Integer>().sort(integers);
         Long timeAfter = System.currentTimeMillis();
 
         //Arrays.stream(doubleTestData).forEach(d -> System.out.println("After: " + d));
 
-        System.out.println("MergeSort took " + ((timeAfter - timeBefore) / 1000.0) + " seconds to sort " + testData.length + " elements.");
-        arraySorted(testData);
+        System.out.println("MergeSort took " + ((timeAfter - timeBefore) / 1000.0) + " seconds to sort " + integers.length + " elements.");
+
+        arraySorted(integers);
     }
 
     private static void testInsertionSort(String filePath, int numberOfElementsToSort) {

@@ -9,9 +9,8 @@ public class MergeSort<T extends Comparable<T>> {
         if (left < right) { //Can we divide further?
             int middle = left + (right - left) / 2;
 
-            //Divide left half
+            //Divide into smaller partitions
             divide(array, left, middle);
-            //Divide right half
             divide(array, middle + 1, right);
 
             //Merge the halves
@@ -20,12 +19,12 @@ public class MergeSort<T extends Comparable<T>> {
     }
 
     private void merge(T[] array, int left, int middle, int right) {
-        //Create and copy data to left partition
+        //Create left partition and copy data to it
         int leftSize = middle - left + 1;
         T[] leftPartition = (T[]) new Comparable[leftSize];
         System.arraycopy(array, left, leftPartition, 0, leftSize);
 
-        //Create and copy data to right partition
+        //Create right partition and copy data to it
         int rightSize = right - middle;
         T[] rightPartition = (T[]) new Comparable[rightSize];
         System.arraycopy(array, middle + 1, rightPartition, 0, rightSize);
