@@ -13,7 +13,23 @@ public class Main {
 
         String intTestDataPath = "src\\testdata\\ints.txt";
 
-        testRadixSortLSD(intTestDataPath, Integer.MAX_VALUE);
+        testRadixSortMSD(intTestDataPath, Integer.MAX_VALUE);
+    }
+
+    private static void testRadixSortMSD(String filePath, int numberOfElementsToSort) {
+        Integer[] integers = fileToIntArray(filePath, numberOfElementsToSort);
+
+        //Arrays.stream(doubleTestData).forEach(d -> System.out.println("Before: " + d));
+
+        Long timeBefore = System.currentTimeMillis();
+        RadixSortMSD.sort(integers, new Integer[integers.length], 512, 0, integers.length - 1, 0, 9, new DigitGetterInt());
+        Long timeAfter = System.currentTimeMillis();
+
+        //Arrays.stream(doubleTestData).forEach(d -> System.out.println("After: " + d));
+
+        System.out.println("RadixSortMSD took " + ((timeAfter - timeBefore) / 1000.0) + " seconds to sort " + integers.length + " elements.");
+
+        arraySorted(integers);
     }
 
     private static void testRadixSortLSD(String filePath, int numberOfElementsToSort) {
