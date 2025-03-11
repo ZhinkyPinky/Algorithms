@@ -12,11 +12,28 @@ public class Main {
         double[] b = {0.78, 0.17, 0.39, 0.26, 0.72, 0.94, 0.21, 0.12, 0.23, 0.68};
 
         String intTestDataPath = "src\\testdata\\ints.txt";
+        String stringTestDataPath = "src\\testdata\\bible-lines.txt";
 
-        testRadixSortMSD(intTestDataPath, Integer.MAX_VALUE);
+        testRadixSortMSDString(stringTestDataPath, Integer.MAX_VALUE);
     }
 
-    private static void testRadixSortMSD(String filePath, int numberOfElementsToSort) {
+    private static void testRadixSortMSDString(String filePath, int numberOfElementsToSort) {
+        String[] strings = fileToStringArray(filePath, numberOfElementsToSort);
+
+        int b = 16;
+        int R = (-1 >>> (32 - b));
+
+        Long timeBefore = System.currentTimeMillis();
+        RadixSortMSD.sort(strings, new String[strings.length], R, 0, strings.length - 1, 0, b, new DigitGetterString());
+        Long timeAfter = System.currentTimeMillis();
+
+        System.out.println("RadixSortMSD took " + ((timeAfter - timeBefore) / 1000.0) + " seconds to sort " + strings.length + " elements.");
+
+        arraySorted(strings);
+        writeToFile("src\\result\\RadixSortMSDStringResult.txt", strings);
+    }
+
+    private static void testRadixSortMSDInt(String filePath, int numberOfElementsToSort) {
         Integer[] integers = fileToIntArray(filePath, numberOfElementsToSort);
 
         //Arrays.stream(doubleTestData).forEach(d -> System.out.println("Before: " + d));
@@ -130,13 +147,13 @@ public class Main {
     }
 
 
-    private static Integer[] fileToIntArray(String filePath, int numberOfIntsToRead) {
+    private static Integer[] fileToIntArray(String filePath, int numberOfLinesToRead) {
         ArrayList<Integer> arrayList = new ArrayList<>();
 
         File file = new File(filePath);
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
             String line;
-            while ((((line = bufferedReader.readLine())) != null) && (arrayList.size() < numberOfIntsToRead)) {
+            while ((((line = bufferedReader.readLine())) != null) && (arrayList.size() < numberOfLinesToRead)) {
                 arrayList.add(Integer.parseInt(line));
             }
         } catch (Exception e) {
@@ -144,5 +161,37 @@ public class Main {
         }
 
         return arrayList.toArray(new Integer[0]);
+    }
+
+    private static String[] fileToStringArray(String filePath, int numberOfLinesToRead) {
+        ArrayList<String> arrayList = new ArrayList<>();
+
+        File file = new File(filePath);
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((((line = bufferedReader.readLine())) != null) && (arrayList.size() < numberOfLinesToRead)) {
+                arrayList.add(line);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return arrayList.toArray(new String[0]);
+    }
+
+    private static void writeToFile(String filePath, String[] strings) {
+        File file = new File(filePath);
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
+            for (String s : strings) {
+                bufferedWriter.write(s + "\n");
+            }
+
+            bufferedWriter.flush();
+            bufferedWriter.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }
